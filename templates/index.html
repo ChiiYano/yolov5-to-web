@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>目标检测系统</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <h2 id="title">目标检测系统</h2>
+    <!-- <img id="imageDisplay" width="500" height="500" />
+    <img id="result_show" src="data:;base64,{{ img_stream }}"> -->
+    <h2>Object Counts:</h2>
+    {% if class_counts %}
+    <ul>
+        {% for class_name, count in class_counts.items() %}
+            <li>{{ class_name }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No objects detected</p>
+    {% endif %}
+    <div style="position: relative;">
+      <img id="imageDisplay" style="position: absolute; top: 0; left: 0;" />
+      <img id="result_show" src="data:;base64,{{ img_stream }}" style="position: absolute; top: 0; left: 0;" />
+    </div>
+  
+
+    <!--提交POST-->
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" id="imageFile" onchange="displayImage()">
+      <input id="button_detect" onclick="show()" type="submit" value="开始检测">
+    </form>
+
+    <!--显示提交的图片-->
+    <a href="http://127.0.0.1:5555">
+      <button id="button_show">显示图片</button>
+    </a>
+
+    
+  
+  </body>
+
+  <div id="imagePath"></div>
+
+  <script>
+    function displayImage() 
+    {
+        var fileInput = document.getElementById("imageFile");
+        var imagePath = document.getElementById("imagePath");
+        var imageDisplay = document.getElementById("imageDisplay");
+        var file = fileInput.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+        imageDisplay.src = e.target.result;
+        var buttonDetect = document.getElementById('button_detect');
+        buttonDetect.style.display = 'block';
+        };
+    }
+    function Show() 
+    {
+          var img = document.getElementById('img');
+          img.src = '/';
+          // window.location.href = 'http://127.0.0.1:5555';
+    }
+    
+  </script>
+
+  <style>
+    #title{
+    text-align: center;
+    color: black;
+    font-size: xx-large;
+    background-color: cadetblue;
+}
+    #imageDisplay{
+      height: 500px;
+      width: 500px;
+      margin-left: 200px;
+      position: relative;
+      z-index: 2;
+    }
+    #button_detect{
+      width: 100px;
+      height: 40px;
+      background-color: skyblue;
+      font-size: larger;
+      margin-left: 900px;
+      margin-top: auto;
+      display: none;
+    }
+    #button_show{
+      width: 100px;
+      height: 40px;
+      background-color: skyblue;
+      font-size: larger;
+      margin-left:900px;
+      margin-top: auto;
+    }
+    #imageFile{
+      width: 300px;
+      height: 40px;
+      background-color:white;
+      font-size: larger;
+      margin-left:900px;
+      margin-top: auto;
+    }
+    #result_show{
+      height: 500px;
+      width: 500px;
+      margin-left: 200px;
+      z-index: 1;
+    }
+  </style>
+</html>
